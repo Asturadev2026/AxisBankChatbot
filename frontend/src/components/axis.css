@@ -1,0 +1,158 @@
+.axis-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f4f4f4;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* TOP BAR */
+.topbar {
+  background: #555;
+  color: white;
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+/* HEADER */
+.header {
+  background: #97144d;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 22px 60px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav span {
+  margin-left: 40px;
+  font-size: 17px;
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  margin-top: 70px;
+  font-size: 42px; /* 🔥 BIG */
+  font-weight: 600;
+}
+
+.title span {
+  color: #97144d;
+  font-style: italic;
+}
+
+/* SEARCH */
+.search-box {
+  margin: 50px auto;
+  width: 75%;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 22px; /* 🔥 BIG */
+  border-radius: 50px;
+  border: none;
+  font-size: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* LINKS */
+.quick-links {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.quick-links span {
+  margin: 0 20px;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+/* ===== LATEST SECTION ===== */
+.latest-section {
+  display: flex;
+  margin: 100px 80px; /* 🔥 BIG spacing */
+  align-items: center;
+}
+
+/* LEFT */
+.latest-left {
+  width: 260px;
+}
+
+.latest-left h2 {
+  font-size: 40px; /* 🔥 BIG */
+  margin-bottom: 8px;
+}
+
+.latest-left p {
+  font-size: 18px;
+  color: #555;
+}
+
+/* DOTS */
+.dots span {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background: #ccc;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* CARDS */
+.latest-cards {
+  display: flex;
+  gap: 35px; /* 🔥 MORE SPACE */
+  overflow-x: auto;
+}
+
+/* CARD */
+.latest-card {
+  width: 360px;   /* 🔥 MUCH BIGGER */
+  height: 220px;  /* 🔥 MUCH BIGGER */
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+/* Hover */
+.latest-card:hover {
+  transform: scale(1.08);
+}
+
+/* IMAGE */
+.latest-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* TEXT OVERLAY */
+.card-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.75),
+    transparent
+  );
+}
