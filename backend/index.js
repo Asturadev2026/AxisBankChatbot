@@ -262,18 +262,10 @@ If you use wrong or generic URL, your answer is incorrect.
 
     
 fullResponse = enforceStructure(fullResponse);
-const parts = fullResponse.split("\n\n");
-
-// ✅ Show intro immediately
-res.write(parts[0] + "\n\n");
-
-
-const remaining = parts.slice(1).join("\n\n");
-
-// 🔥 Smooth typing (balanced speed)
-for (let char of remaining) {
+// ✅ Stream EVERYTHING evenly (no instant paragraph)
+for (let char of fullResponse) {
   res.write(char);
-  await new Promise(r => setTimeout(r, 20)); // slower + readable
+  await new Promise(r => setTimeout(r, 20));
 }
 
 res.end();
