@@ -104,7 +104,7 @@ export default function Chat() {
       {/* Welcome Tooltip */}
       {!isOpen && showWelcome && (
         <div className="chat-welcome">
-          Hi! I'm <b>Ana</b>, your Axis Bank assistant.<br />
+          Hi! I'm <b>Intelezen</b>, your Axis Bank assistant.<br />
           Need help with banking, cards or loans?
           <span
             className="close-tooltip"
