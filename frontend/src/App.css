@@ -353,3 +353,71 @@ body {
     transparent
   );
 }
+.chat-welcome {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  background: #fff;
+  color: #333;
+  padding: 12px 16px;
+  border-radius: 12px;
+  width: 260px;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  line-height: 1.4;
+  animation: fadeInUp 0.4s ease;
+}
+
+.chat-welcome::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  transform: rotate(45deg);
+}
+
+.close-tooltip {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #888;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.typing span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 2px;
+  background: #999;
+  border-radius: 50%;
+  animation: blink 1.4s infinite both;
+}
+
+.typing span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}

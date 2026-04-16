@@ -7,13 +7,19 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
+  // ✅ NEW STATE (welcome tooltip)
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  // ✅ NEW STATE (typing indicator)
+  const [isTyping, setIsTyping] = useState(false);
+
   const chatRef = useRef(null);
   const chatEndRef = useRef(null);
 
   // ✅ Auto scroll
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isTyping]);
 
   // ✅ Click outside to close
   useEffect(() => {
@@ -32,6 +38,15 @@ export default function Chat() {
     };
   }, [isOpen]);
 
+  // ✅ Auto hide welcome
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowWelcome(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -40,6 +55,9 @@ export default function Chat() {
 
     const currentInput = input;
     setInput("");
+
+    // ✅ SHOW TYPING
+    setIsTyping(true);
 
     const response = await fetch("http://localhost:5000/chat", {
       method: "POST",
@@ -56,9 +74,17 @@ export default function Chat() {
 
     setMessages(prev => [...prev, { role: "bot", text: "" }]);
 
+    let firstChunk = true;
+
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
+
+      // ✅ Stop typing when response starts
+      if (firstChunk) {
+        setIsTyping(false);
+        firstChunk = false;
+      }
 
       const chunk = decoder.decode(value);
       botText += chunk;
@@ -69,15 +95,34 @@ export default function Chat() {
         return updated;
       });
     }
+
+    setIsTyping(false);
   };
 
   return (
     <>
+      {/* Welcome Tooltip */}
+      {!isOpen && showWelcome && (
+        <div className="chat-welcome">
+          Hi! I'm <b>Ana</b>, your Axis Bank assistant.<br />
+          Need help with banking, cards or loans?
+          <span
+            className="close-tooltip"
+            onClick={() => setShowWelcome(false)}
+          >
+            ×
+          </span>
+        </div>
+      )}
+
       {/* Floating Icon */}
       {!isOpen && (
         <div
           className="chat-icon"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+            setShowWelcome(false);
+          }}
         >
           <MessageCircle size={26} />
         </div>
@@ -94,54 +139,65 @@ export default function Chat() {
         >
           {/* Header */}
           <div className="chat-header">
-  <div className="chat-header-left">
-    <img
-      src="/assets/Intelezen.png"
-      alt="Intelezen Logo"
-      className="chat-logo"
-    />
-    <span className="chat-title"></span>
-  </div>
+            <div className="chat-header-left">
+              <img
+                src="/assets/Intelezen.png"
+                alt="Intelezen Logo"
+                className="chat-logo"
+              />
+              <span className="chat-title"></span>
+            </div>
 
-  <X size={18} onClick={() => setIsOpen(false)} />
-</div>
+            <X size={18} onClick={() => setIsOpen(false)} />
+          </div>
 
           {/* Messages */}
           <div className="chat-box">
             {messages.map((m, i) => (
-              <div className={`message ${m.role}`}>
-  {m.text.split("\n").map((line, i) => (
-  <div key={i} style={{ marginBottom: "6px" }}>
-    {line.split(/(https?:\/\/[^\s]+)/g).map((part, j) => {
-      if (part.match(/https?:\/\/[^\s]+/)) {
-        return (
-          <a
-            key={j}
-            href={part}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: "#8c1d40",
-              textDecoration: "underline",
-              wordBreak: "break-all"
-            }}
-          >
-            {part}
-          </a>
-        );
-      }
+              <div className={`message ${m.role}`} key={i}>
+                {m.text.split("\n").map((line, i) => (
+                  <div key={i} style={{ marginBottom: "6px" }}>
+                    {line.split(/(https?:\/\/[^\s]+)/g).map((part, j) => {
+                      if (part.match(/https?:\/\/[^\s]+/)) {
+                        return (
+                          <a
+                            key={j}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              color: "#8c1d40",
+                              textDecoration: "underline",
+                              wordBreak: "break-all"
+                            }}
+                          >
+                            {part}
+                          </a>
+                        );
+                      }
 
-      // ✅ Bullet styling
-      if (line.trim().startsWith("•")) {
-        return <span key={j} style={{ display: "block", marginLeft: "10px" }}>{part}</span>;
-      }
+                      if (line.trim().startsWith("•")) {
+                        return (
+                          <span key={j} style={{ display: "block", marginLeft: "10px" }}>
+                            {part}
+                          </span>
+                        );
+                      }
 
-      return part;
-    })}
-  </div>
-))}
-</div>
+                      return part;
+                    })}
+                  </div>
+                ))}
+              </div>
             ))}
+
+            {/* ✅ TYPING INDICATOR */}
+            {isTyping && (
+              <div className="message bot typing">
+                <span></span><span></span><span></span>
+              </div>
+            )}
+
             <div ref={chatEndRef} />
           </div>
 
