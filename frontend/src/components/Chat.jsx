@@ -59,13 +59,16 @@ export default function Chat() {
     // ✅ SHOW TYPING
     setIsTyping(true);
 
-    const response = await fetch("http://localhost:5000/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query: currentInput }),
-    });
+    const BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const response = await fetch(`${BASE_URL}/chat`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ query: currentInput }),
+});
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
